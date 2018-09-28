@@ -40,6 +40,6 @@ func main() {
 		dice = rotateDice(dice, i)
 	}
 
-	fmt.Printf("%v\n", dice)
+	fmt.Printf("%s\n", dice[0])
 
 }
