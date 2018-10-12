@@ -11,6 +11,7 @@ import (
 var sc = bufio.NewScanner(os.Stdin)
 
 func main() {
+	sc.Buffer([]byte{}, 10000000000000000)
 	sc.Scan()
 	num, _ := strconv.Atoi(sc.Text())
 	sc.Scan()
