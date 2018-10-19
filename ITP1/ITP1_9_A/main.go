@@ -8,8 +8,11 @@ import (
 )
 
 var sc = bufio.NewScanner(os.Stdin)
+var buf = make([]byte, 100000)
 
 func main() {
+	sc.Buffer(buf, 100000000)
+
 	var searchTxt string
 	var i, result int
 	for sc.Scan() {
