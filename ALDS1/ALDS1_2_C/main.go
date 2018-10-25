@@ -12,24 +12,25 @@ import (
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
 	sc.Scan()
+	length, _ := strconv.Atoi(sc.Text())
+	var inputSuits = make([]string, length)
+	var inputNums = make([]int, length)
+	var inputSuits2 = make([]string, length)
+	var inputNums2 = make([]int, length)
+
 	sc.Scan()
-	var inputSuits []string
-	var inputNums []int
-	for _, v := range strings.Split(sc.Text(), " ") {
-		inputSuits = append(inputSuits, string(v[0]))
-		tmp, _ := strconv.Atoi(string(v[1]))
-		inputNums = append(inputNums, tmp)
+	for i, v := range strings.Split(sc.Text(), " ") {
+		inputSuits[i] = string(v[0])
+		inputSuits2[i] = string(v[0])
+		inputNums[i], _ = strconv.Atoi(string(v[1]))
+		inputNums2[i], _ = strconv.Atoi(string(v[1]))
 	}
 
-	sortedSuits, sortedNums := bubbleSort(inputSuits, inputNums)
-	fmt.Println(sortedSuits)
-	fmt.Println(sortedNums)
-	fmt.Println(judgeStable(inputSuits, inputNums, sortedSuits, sortedNums))
+	bubbleSuits, bubbleNums := bubbleSort(inputSuits, inputNums)
+	selectionSuits, selectionNums := selectionSort(inputSuits2, inputNums2)
 
-	sortedSuits, sortedNums = selectionSort(inputSuits, inputNums)
-	fmt.Println(sortedSuits)
-	fmt.Println(sortedNums)
-	fmt.Println(judgeStable(inputSuits, inputNums, sortedSuits, sortedNums))
+	print(inputSuits, inputNums, bubbleSuits, bubbleNums)
+	print(inputSuits, inputNums, selectionSuits, selectionNums)
 }
 
 func bubbleSort(strs []string, nums []int) ([]string, []int) {
@@ -95,4 +96,19 @@ func judgeStable(orgStrs []string, orgNums []int, sortedStrs []string, sortedNum
 	}
 
 	return reflect.DeepEqual(sortedSuits, orgSuits)
+}
+
+func print(orgStrs []string, orgNums []int, sortedStrs []string, sortedNums []int) {
+	for i, v := range sortedNums {
+		if i == 0 {
+			fmt.Printf("%s%d", sortedStrs[i], v)
+		} else {
+			fmt.Printf(" %s%d", sortedStrs[i], v)
+		}
+	}
+	if judgeStable(orgStrs, orgNums, sortedStrs, sortedNums) {
+		fmt.Println("\nStable")
+	} else {
+		fmt.Println("\nNot stable")
+	}
 }
