@@ -13,7 +13,6 @@ func main() {
 
 	var stack []string
 	for sc.Scan() {
-		fmt.Println(stack)
 		i := sc.Text()
 		if i == "+" || i == "-" || i == "*" {
 			a, _ := strconv.Atoi(stack[len(stack)-2])
