@@ -8,59 +8,46 @@ import (
 	"strings"
 )
 
-func push(list []string, args []string) []string {
+func push(queue []string, args []string, head int, tail int) ([]string, int, int) {
 	if args[0] == "0" {
-		length := len(list)
-		if length == 0 {
-			list = []string{args[1]}
-		} else {
-			list = append(list, list[length-1])
-			for i := length; i > 0; i-- {
-				list[i] = list[i-1]
-			}
-			list[0] = args[1]
-		}
-	} else if args[0] == "1" {
-		list = append(list, args[1])
+		head--
+		queue[head] = args[1]
+	} else {
+		queue[tail] = args[1]
+		tail++
 	}
-
-	return list
+	return queue, head, tail
 }
 
-func pop(list []string, arg string) []string {
+func pop(arg string, head int, tail int) (int, int) {
 	if arg == "0" {
-		length := len(list)
-		for i := 0; i < length-1; i++ {
-			list[i] = list[i+1]
-		}
+		head++
 	} else if arg == "1" {
-		list = list[:len(list)-1]
+		tail--
 	}
-	return list
+
+	return head, tail
 }
 
 func main() {
 	var sc = bufio.NewScanner(os.Stdin)
-	var list = []string{}
+	sc.Scan()
+	length, _ := strconv.Atoi(sc.Text())
 
-	var i = 0
+	var queue = make([]string, length*2)
+	head := length
+	tail := head
 	for sc.Scan() {
-		i++
-		if i == 1 {
-			continue
-		}
 		inputs := strings.Split(sc.Text(), " ")
 
-		if inputs[0] == "0" {
-			list = push(list, inputs[1:])
-		} else if inputs[0] == "1" {
-			if list != nil {
-				num, _ := strconv.Atoi(inputs[1])
-				fmt.Println(list)
-				fmt.Printf("%s\n", list[num])
-			}
-		} else if inputs[0] == "2" {
-			list = pop(list, inputs[1])
+		switch inputs[0] {
+		case "0":
+			queue, head, tail = push(queue, inputs[1:], head, tail)
+		case "1":
+			num, _ := strconv.Atoi(inputs[1])
+			fmt.Println(queue[head+num])
+		case "2":
+			head, tail = pop(inputs[1], head, tail)
 		}
 	}
 }
