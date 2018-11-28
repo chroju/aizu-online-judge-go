@@ -10,6 +10,8 @@ import (
 
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
+	buf := make([]byte, 1000)
+	sc.Buffer(buf, 10000000)
 
 	sc.Scan()
 	inputs := strings.Split(sc.Text(), " ")
@@ -25,7 +27,10 @@ func main() {
 	for sc.Scan() {
 		inputs = strings.Split(sc.Text(), " ")
 		n, _ := strconv.Atoi(inputs[1])
-		fmt.Println(queues[999])
+		if n == 23 {
+			fmt.Println(inputs)
+			fmt.Println(queues[n])
+		}
 
 		switch inputs[0] {
 		case "0":
@@ -46,16 +51,34 @@ func main() {
 				fmt.Println(queues[n][0])
 			}
 		case "2":
-			queues[n][0] = queues[n][tail-1]
-			queues[n][tail-1] = 0
-			i := 0
-			for {
-				if (i+1)*2-1 >= tail || queues[n][i] > queues[n]
+			if tail[n] != 0 {
+				tail[n]--
+				queues[n][0] = queues[n][tail[n]]
+				queues[n][tail[n]] = 0
+
+				i := 0
+				for {
+					child1 := (i + 1) * 2
+					child2 := child1 - 1
+					cf := 0
+					if child2 >= tail[n] {
+						break
+					} else if child1 == tail[n] || queues[n][child2] > queues[n][child1] {
+						cf = child2
+					} else {
+						cf = child1
+					}
+
+					if queues[n][cf] <= queues[n][i] {
+						break
+					} else {
+						tmp := queues[n][cf]
+						queues[n][cf] = queues[n][i]
+						queues[n][i] = tmp
+						i = cf
+					}
+				}
 			}
-			for i := 0; i < tail[n]-1; i++ {
-				queues[n][i] = queues[n][i+1]
-			}
-			tail[n]--
 		}
 	}
 }
