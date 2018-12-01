@@ -6,6 +6,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/pa"
 )
 
 func main() {
@@ -21,11 +23,11 @@ func main() {
 	sc.Scan()
 	B := strings.Split(sc.Text(), " ")
 
-	shorter := lenA
-	short := 1
-	if lenB < lenA {
-		shorter = lenB
-		short = 0
+	shorter := lenB
+	short := 0
+	if lenB > lenA {
+		shorter = lenA
+		short = 1
 	}
 
 	for i := 0; i < shorter; i++ {
