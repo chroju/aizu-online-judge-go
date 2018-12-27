@@ -3,9 +3,13 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
+	"strings"
 )
+
+var count int
 
 func main() {
 	sc := bufio.NewScanner(os.Stdin)
@@ -20,27 +24,31 @@ func main() {
 		i++
 	}
 
-	mergeSort(A, 0, len(A)-1)
-	fmt.Println(A)
+	mergeSort(A, 0, length)
+	fmt.Println(strings.Trim(fmt.Sprint(A), "[]"))
+	fmt.Println(count)
 }
 
 func merge(A []int, left int, mid int, right int) {
 	n1 := mid - left
 	n2 := right - mid
 
-	L := []int{}
-	R := []int{}
+	L := make([]int, n1+1)
+	R := make([]int, n2+1)
 	for i := 0; i <= n1-1; i++ {
 		L[i] = A[left+i]
 	}
 	for i := 0; i <= n2-1; i++ {
 		R[i] = A[mid+i]
 	}
+	L[n1] = int(math.Pow(10, 9)) + 1
+	R[n2] = int(math.Pow(10, 9)) + 1
 
 	i := 0
 	j := 0
 
 	for k := left; k <= right-1; k++ {
+		count++
 		if L[i] <= R[j] {
 			A[k] = L[i]
 			i++
