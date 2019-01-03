@@ -28,15 +28,16 @@ func main() {
 		switch inputs[0] {
 		case "insert":
 			num, _ := strconv.Atoi(inputs[1])
-			newNode := node{value: num, left: -1, right: -1}
-			tree[c] = newNode
+			tree[c] = node{value: num, left: -1, right: -1}
 			if c != 0 {
 				insert(tree, 0, c)
 			}
 			c++
 		case "print":
-			printInorder(tree)
-			printPreorder(tree)
+			printInorder(tree, 0)
+			fmt.Println()
+			printPreorder(tree, 0)
+			fmt.Println()
 		}
 	}
 }
@@ -57,30 +58,20 @@ func insert(tree []node, diffPoint int, nodePoint int) {
 	}
 }
 
-func printInorder(tree []node) {
-	subInorder(tree, 0)
-	fmt.Println()
-}
-
-func subInorder(tree []node, current int) {
+func printInorder(tree []node, current int) {
 	if current == -1 {
 		return
 	}
-	subInorder(tree, tree[current].left)
+	printInorder(tree, tree[current].left)
 	fmt.Printf(" %d", tree[current].value)
-	subInorder(tree, tree[current].right)
+	printInorder(tree, tree[current].right)
 }
 
-func printPreorder(tree []node) {
-	subPreorder(tree, 0)
-	fmt.Println()
-}
-
-func subPreorder(tree []node, current int) {
+func printPreorder(tree []node, current int) {
 	if current == -1 {
 		return
 	}
 	fmt.Printf(" %d", tree[current].value)
-	subPreorder(tree, tree[current].left)
-	subPreorder(tree, tree[current].right)
+	printPreorder(tree, tree[current].left)
+	printPreorder(tree, tree[current].right)
 }
