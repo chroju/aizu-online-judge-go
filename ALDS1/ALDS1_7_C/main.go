@@ -9,8 +9,9 @@ import (
 )
 
 type node struct {
-	left  int
-	right int
+	isNotRoot bool
+	left      int
+	right     int
 }
 
 func main() {
@@ -23,17 +24,32 @@ func main() {
 	for sc.Scan() {
 		v := strings.Split(sc.Text(), " ")
 		id, _ := strconv.Atoi(v[0])
+
 		tree[id].left, _ = strconv.Atoi(v[1])
+		if tree[id].left >= 0 {
+			tree[tree[id].left].isNotRoot = true
+		}
+
 		tree[id].right, _ = strconv.Atoi(v[2])
+		if tree[id].right >= 0 {
+			tree[tree[id].right].isNotRoot = true
+		}
 	}
 
-	fmt.Println(tree)
+	var root int
+	for i, v := range tree {
+		if !v.isNotRoot {
+			root = i
+			break
+		}
+	}
+
 	fmt.Println("Preorder")
-	preorder(tree, 0)
+	preorder(tree, root)
 	fmt.Println("\nInorder")
-	inorder(tree, 0)
+	inorder(tree, root)
 	fmt.Println("\nPostorder")
-	postorder(tree, 0)
+	postorder(tree, root)
 	fmt.Println("")
 }
 
@@ -50,16 +66,16 @@ func inorder(tree []node, point int) {
 	if point == -1 {
 		return
 	}
-	preorder(tree, tree[point].left)
+	inorder(tree, tree[point].left)
 	fmt.Printf(" %d", point)
-	preorder(tree, tree[point].right)
+	inorder(tree, tree[point].right)
 }
 
 func postorder(tree []node, point int) {
 	if point == -1 {
 		return
 	}
-	preorder(tree, tree[point].left)
-	preorder(tree, tree[point].right)
+	postorder(tree, tree[point].left)
+	postorder(tree, tree[point].right)
 	fmt.Printf(" %d", point)
 }
